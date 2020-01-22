@@ -1,0 +1,57 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: EC2 Template
+Parameters:
+  KeyName1:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Name of existing keypair.
+  InstanceTypeParameter1:
+    Type: String
+    AllowedValues:
+    - t2.micro
+    - r4.2xlarge
+    Description: select instnace type.
+  EcsSecurityGroupLb1:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: This is SG
+  vpcid1:
+    Type: AWS::EC2::VPC::Id
+  mySubnetIDs1:
+    Type: AWS::EC2::Subnet::Id
+    Description: This is Subnets
+Resources:
+  Ec2Instance1:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-00068cd7555f543d5
+      KeyName:
+        Ref: KeyName1
+      InstanceType:
+        Ref: InstanceTypeParameter1
+      Tags:
+      - Key: Name
+        Value: CFDemo
+      - Key: Env
+        Value: Test
+      - Key: Function
+        Value: DataLake
+      - Key: Role
+        Value: Datalake Bastion Server for Test environment
+      - Key: Data Classification
+        Value: Routine
+      NetworkInterfaces:
+      - AssociatePublicIpAddress: 'false'
+        DeviceIndex: '0'
+        SubnetId:
+          Ref: mySubnetIDs1
+        GroupSet:
+        - Ref: EcsSecurityGroupLb1
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: 40
+          VolumeType: gp2
+      - DeviceName: "/dev/sdf"
+        Ebs:
+          VolumeSize: 80
+          VolumeType: gp2

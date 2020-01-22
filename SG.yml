@@ -1,0 +1,36 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  vpcid:
+    Type: AWS::EC2::VPC::Id
+Resources:
+  InstanceSecurityGroupSgDevMgtILB:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription : Allow HTTPS traffic to our host
+      GroupName: Test-Security-Group
+      VpcId:
+        Ref: vpcid
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 0.0.0.0/0
+      Tags:
+       - Key: Name
+         Value: TestSecurityGroup
+  InstanceSecurityGroupSgDevWAPDef:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription : Allow HTTPs traffic to our host
+      GroupName: SG-DEV-WAP-DEF
+      VpcId:
+        Ref: vpcid
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        SourceSecurityGroupId: !Ref InstanceSecurityGroupSgDevMgtILB
+      Tags:
+       - Key: Name
+         Value: Test

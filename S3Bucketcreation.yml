@@ -1,0 +1,20 @@
+---
+Description: This template will create an s3bucket
+Resources:
+  S3Bucket1:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: cloud-formation-s3bucket
+      Tags:
+      - Key: Name
+        Value: cloud-formation-s3bucket
+      - Key: LOB
+        Value: DATA
+      - Key: Function
+        Value: DataLake
+      - Key: ROLE
+        Value: DataLake Hcf-dev-raw1 for Salesforce
+      - Key: Data Classification
+        Value:  Protected
+      - Key: Env
+        Value: Dev
